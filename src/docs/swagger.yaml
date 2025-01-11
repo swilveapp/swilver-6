@@ -1,0 +1,240 @@
+openapi: 3.0.0
+info:
+  title: VTU Platform API
+  version: 1.0.0
+  description: Nigerian Virtual Top-Up Platform API Documentation
+
+servers:
+  - url: /api
+    description: API Base URL
+
+components:
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+    ApiKeyAuth:
+      type: apiKey
+      in: header
+      name: X-API-Key
+
+  schemas:
+    Error:
+      type: object
+      properties:
+        status:
+          type: string
+          enum: [error]
+        code:
+          type: integer
+        message:
+          type: string
+
+    Success:
+      type: object
+      properties:
+        status:
+          type: string
+          enum: [success]
+        data:
+          type: object
+
+paths:
+  /auth/register:
+    post:
+      tags: [Authentication]
+      summary: Register new user
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [email, password, fullName, phone]
+              properties:
+                email:
+                  type: string
+                  format: email
+                password:
+                  type: string
+                  minLength: 8
+                fullName:
+                  type: string
+                phone:
+                  type: string
+                role:
+                  type: string
+                  enum: [reseller, api_user]
+                  default: reseller
+      responses:
+        201:
+          description: User registered successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Success'
+        400:
+          description: Invalid input
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /auth/login:
+    post:
+      tags: [Authentication]
+      summary: User login
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [email, password]
+              properties:
+                email:
+                  type: string
+                  format: email
+                password:
+                  type: string
+      responses:
+        200:
+          description: Login successful
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Success'
+        401:
+          description: Invalid credentials
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /wallet/balance:
+    get:
+      tags: [Wallet]
+      summary: Get wallet balance
+      security:
+        - BearerAuth: []
+      responses:
+        200:
+          description: Wallet balance retrieved successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Success'
+        401:
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /airtime/purchase:
+    post:
+      tags: [Airtime]
+      summary: Purchase airtime
+      security:
+        - BearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [phone, amount, networkId]
+              properties:
+                phone:
+                  type: string
+                amount:
+                  type: number
+                  minimum: 1
+                networkId:
+                  type: string
+                  format: uuid
+                provider:
+                  type: string
+                  enum: [vtpass, gladtidings]
+                  default: vtpass
+      responses:
+        200:
+          description: Airtime purchase successful
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Success'
+        400:
+          description: Invalid input
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /data/plans/{networkId}:
+    get:
+      tags: [Data]
+      summary: Get data plans for network
+      security:
+        - BearerAuth: []
+      parameters:
+        - in: path
+          name: networkId
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        200:
+          description: Data plans retrieved successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Success'
+        404:
+          description: Network not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /data/purchase:
+    post:
+      tags: [Data]
+      summary: Purchase data bundle
+      security:
+        - BearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [phone, planId, networkId]
+              properties:
+                phone:
+                  type: string
+                planId:
+                  type: string
+                  format: uuid
+                networkId:
+                  type: string
+                  format: uuid
+                provider:
+                  type: string
+                  enum: [vtpass, gladtidings]
+                  default: vtpass
+      responses:
+        200:
+          description: Data purchase successful
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Success'
+        400:
+          description: Invalid input
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'

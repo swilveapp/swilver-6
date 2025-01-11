@@ -1,0 +1,11 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+const express_1 = require("express");
+const purchase_1 = require("../controllers/data/purchase");
+const plans_1 = require("../controllers/data/plans");
+const auth_1 = require("../middleware/auth");
+const router = (0, express_1.Router)();
+router.use(auth_1.authenticate);
+router.get('/plans/:networkId', plans_1.getDataPlans);
+router.post('/purchase', purchase_1.purchaseData);
+exports.default = router;

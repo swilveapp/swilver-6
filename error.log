@@ -1,0 +1,11 @@
+{"code":"42P01","file":"parse_relation.c","level":"error","line":"1392","name":"PostgresError","position":"135","routine":"parserOpenTable","severity":"ERROR","severity_local":"ERROR","timestamp":"2025-01-11T06:35:05.293Z"}
+{"code":"UNDEFINED_VALUE","level":"error","timestamp":"2025-01-11T07:00:41.444Z"}
+{"level":"error","name":"UnauthorizedError","statusCode":401,"timestamp":"2025-01-11T07:01:16.080Z"}
+{"level":"error","name":"UnauthorizedError","statusCode":401,"timestamp":"2025-01-11T07:02:38.890Z"}
+{"level":"error","name":"UnauthorizedError","statusCode":401,"timestamp":"2025-01-11T07:03:41.490Z"}
+{"level":"error","name":"UnauthorizedError","statusCode":401,"timestamp":"2025-01-11T07:04:53.854Z"}
+{"level":"error","name":"UnauthorizedError","statusCode":401,"timestamp":"2025-01-11T07:05:43.559Z"}
+{"level":"error","name":"BadRequestError","statusCode":400,"timestamp":"2025-01-11T07:06:42.413Z"}
+{"level":"error","name":"BadRequestError","statusCode":400,"timestamp":"2025-01-11T07:06:49.206Z"}
+{"level":"error","name":"BadRequestError","statusCode":400,"timestamp":"2025-01-11T07:06:53.226Z"}
+{"level":"error","timestamp":"2025-01-11T07:07:40.081Z"}
